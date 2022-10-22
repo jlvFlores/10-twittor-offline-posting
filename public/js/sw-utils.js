@@ -46,15 +46,16 @@ function manejoApiMensajes( cacheName, req ) {
     if ( req.clone().method === 'POST' ) {
         //POSTEO de un nuevo mensaje
 
-        req.clone().text().then( body => {
-            // console.log(body);
-            const bodyObj = JSON.partse(body);
-            guardarMensaje( bodyObj );
-        });
+        if ( self.registration.sync ) {
+            return req.clone().text().then( body => {
+                // console.log(body);
+                const bodyObj = JSON.partse(body);
+                return guardarMensaje( bodyObj );
+            });
+        } else {
+            return fetch( req );
+        }
 
-        // tengo que guardar en el indexDB
-
-        return fetch( req );
 
     } else {
 
